@@ -4,14 +4,11 @@ export CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
 CASTAI_API_URL="${CASTAI_API_URL:-https://api.cast.ai}"
 
-# **CHANGE START**: Added support for FOLDER_ID to retrieve projects under a specific folder
 if [ ! -z "$FOLDER_ID" ]; then
   PROJECTS=$(gcloud projects list --filter="parent.id=$FOLDER_ID" --format="value(projectId)")
 else
-  # Default to listing all projects
   PROJECTS=${PROJECTS:- $(gcloud projects list --format="value(projectId)")}
 fi
-# **CHANGE END**
 
 PROJECTS=$(echo "$PROJECTS" | awk -F, '{ for(i=1; i<=NF; i++) print $i }') # convert comma-delimited values to new-line
 
